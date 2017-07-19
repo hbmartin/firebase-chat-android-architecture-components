@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="java.util.List"/>
+        <import type="me.haroldmartin.firebaseextensions.db.Status"/>
+        <import type="me.haroldmartin.firebaseextensions.db.Resource"/>
+        <variable name="resultCount" type="int"/>
+        <variable name="name" type="String"/>
+        <variable name="loadingMore" type="boolean"/>
+        <variable name="searchResource" type="me.haroldmartin.firebaseextensions.db.Resource"/>
+        <variable name="callback" type="me.haroldmartin.chat.ui.common.UiActionCallback"/>
+         <variable name="newChatCallback" type="me.haroldmartin.chat.ui.common.UiActionCallback"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:id="@+id/load_more_bar"
+            app:visibleGone="@{loadingMore}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <com.stfalcon.chatkit.dialogs.DialogsList
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/new_chat" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="8dp"
+            app:dialogDividerLeftPadding="0dp"
+            app:dialogMessageTextSize="17sp"
+            app:dialogTitleTextStyle="bold"
+            app:dialogUnreadBubbleBackgroundColor="@color/red"
+            app:dialogUnreadItemBackground="@color/gray_transparent"
+            app:dialogUnreadTitleTextStyle="bold"
+            android:id="@+id/conversation_list" />
+        <Button
+            android:id="@+id/new_chat"
+            android:onClick="@{() -> newChatCallback.call()}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_conversation"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <include layout="@layout/loading_state"
+             app:resource="@{searchResource}"
+             app:callback="@{() -> callback.call()}"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:layout_constraintStart_toStartOf="parent"
+             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+             android:layout_marginEnd="8dp" app:layout_constraintBottom_toBottomOf="parent"
+             android:layout_marginBottom="8dp" android:layout_marginTop="8dp"
+             app:layout_constraintTop_toTopOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

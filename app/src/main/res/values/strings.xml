@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Chat Coach</string>
+    <string name="retry">Retry</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="a11y_user_photo">user photo</string>
+    <string name="a11y_user_name">user name</string>
+    <string name="search_hint">search repositories</string>
+    <string name="repo_full_name"><b>%s</b>/%s</string>
+    <string name="empty_search_result">No results for <b>%s</b></string>
+    <string name="a11y_contributor_avatar">contributor avatar</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="welcome_screen_text">Welcome to Chat</string>
+    <string name="sign_in_button_text">Sign In</string>
+    <string name="show_inbox_button_text">Show Inbox</string>
+    <string name="sign_out_button_text">Sign Out</string>
+    <string name="new_chat_input_hint">Conversation name</string>
+    <string name="input_prefill">random</string>
+    <string name="new_conversation">New Conversation</string>
+    <string name="new_message">New Message</string>
+    <string name="hint_enter_a_message">I\'d like to thank the academy...</string>
+</resources>

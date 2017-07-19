@@ -1,0 +1,6 @@
+[submodule "ChatKit"]
+	path = ChatKit
+	url = git@github.com:stfalcon-studio/ChatKit.git
+[submodule "fbx"]
+	path = fbx
+	url = ./fbx/
