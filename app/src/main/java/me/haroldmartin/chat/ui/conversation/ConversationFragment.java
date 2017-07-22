@@ -15,7 +15,7 @@ import me.haroldmartin.firebaseextensions.FBX;
 import me.haroldmartin.firebaseextensions.db.Resource;
 import me.haroldmartin.chat.repository.InboxRepository;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
-import me.haroldmartin.chat.ui.common.GlideUtil;
+import me.haroldmartin.chat.ui.common.GlideImageManager;
 import me.haroldmartin.chat.util.AutoClearedValue;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -45,7 +45,7 @@ public class ConversationFragment extends BoundVmFragment<ConversationViewModel,
     protected void setupUi() {
         binding.get().setCallback(() -> viewModel.retry());
         MessagesListAdapter<ChatMessage> messageAdapter =
-                new MessagesListAdapter<ChatMessage>(userId, new GlideUtil());
+                new MessagesListAdapter<ChatMessage>(userId, new GlideImageManager());
         binding.get().input.setInputListener(this);
         binding.get().messagesList.setAdapter(messageAdapter);
         this.adapter = new AutoClearedValue<>(this, messageAdapter);

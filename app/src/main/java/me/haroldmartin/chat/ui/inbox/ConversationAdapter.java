@@ -1,8 +1,9 @@
-package me.haroldmartin.chat.ui.common;
+package me.haroldmartin.chat.ui.inbox;
 
 import me.haroldmartin.chat.R;
 import me.haroldmartin.chat.api.InboxItem;
 import me.haroldmartin.chat.databinding.ConversationItemBinding;
+import me.haroldmartin.chat.ui.common.DataBoundListAdapter;
 import me.haroldmartin.chat.util.Objects;
 
 import android.databinding.DataBindingComponent;

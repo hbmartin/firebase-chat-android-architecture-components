@@ -10,7 +10,7 @@ import me.haroldmartin.chat.api.InboxItem;
 import me.haroldmartin.chat.databinding.InboxFragmentBinding;
 import me.haroldmartin.chat.di.Injectable;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
-import me.haroldmartin.chat.ui.common.GlideUtil;
+import me.haroldmartin.chat.ui.common.GlideImageManager;
 import me.haroldmartin.chat.util.AutoClearedValue;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 
@@ -25,7 +25,7 @@ public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragment
 
     @Override
     protected void setupUi() {
-        DialogsListAdapter<InboxItem> dialogsAdapter = new DialogsListAdapter<>(new GlideUtil());
+        DialogsListAdapter<InboxItem> dialogsAdapter = new DialogsListAdapter<>(new GlideImageManager());
         dialogsAdapter.setOnDialogClickListener(this);
         adapter = new AutoClearedValue<>(this, dialogsAdapter);
         binding.get().conversationList.setAdapter(dialogsAdapter);

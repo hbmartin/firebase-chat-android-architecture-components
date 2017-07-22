@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import me.haroldmartin.chat.R;
 import com.stfalcon.chatkit.commons.ImageLoader;
 
-public class GlideUtil implements ImageLoader {
+public class GlideImageManager implements ImageLoader {
     public void loadImage(ImageView imageView, String url) {
         Context context = imageView.getContext();
         ColorDrawable cd = new ColorDrawable(ContextCompat.getColor(context, R.color.colorPrimary));
