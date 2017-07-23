@@ -53,6 +53,7 @@ dependencies {
     compile "com.google.firebase:firebase-storage:$firebase_version"
     compile "com.google.firebase:firebase-auth:$firebase_version"
     compile "com.google.firebase:firebase-config:$firebase_version"
+    compile "com.google.firebase:firebase-crash:$firebase_version"
     compile "com.google.android.gms:play-services-plus:$firebase_version"
     compile "com.google.android.gms:play-services-auth:$firebase_version"
     compile "com.google.android.gms:play-services-identity:$firebase_version"

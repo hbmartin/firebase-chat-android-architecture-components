@@ -35,6 +35,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.crash.FirebaseCrash;
 
 import hugo.weaving.DebugLog;
 import timber.log.Timber;
@@ -164,7 +165,11 @@ public class ProfileActivity extends AppCompatActivity implements
             Timber.e("Google Sign-In failed.");
             Timber.e("status code : " + result.getStatus().getStatusCode());
             Timber.e(result.getStatus().getStatusMessage());
-            Toast.makeText(this, "Google login failed.", Toast.LENGTH_SHORT).show();
+            String error = "Google Sign-In failed. status code : " +
+                    result.getStatus().getStatusCode() + " . reason: " +
+                    result.getStatus().getStatusMessage();
+            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            FirebaseCrash.log(error);
         }
     }
 

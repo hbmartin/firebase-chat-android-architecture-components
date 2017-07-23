@@ -1,6 +1,6 @@
 [submodule "ChatKit"]
 	path = ChatKit
-	url = git@github.com:stfalcon-studio/ChatKit.git
+	url = git@github.com:hbmartin/ChatKit.git
 [submodule "firebase-extensions-android-architecture"]
 	path = firebase-extensions-android-architecture
 	url = git@github.com:hbmartin/firebase-extensions-android-architecture.git
