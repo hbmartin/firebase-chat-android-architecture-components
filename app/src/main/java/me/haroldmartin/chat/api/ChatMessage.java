@@ -3,6 +3,8 @@ package me.haroldmartin.chat.api;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.IUser;
 
@@ -30,7 +32,8 @@ public class ChatMessage implements IMessage {
         this.userAvatar = user.getPhotoUrl().toString();
         this.conversationId = conversationId;
         this.text = text;
-        this.timestamp = System.currentTimeMillis(); // TODO: SNTP
+        this.timestamp = System.currentTimeMillis();
+//        this.timestamp = ServerValue.TIMESTAMP;
     }
 
     @Override

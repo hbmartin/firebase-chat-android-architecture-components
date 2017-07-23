@@ -62,6 +62,7 @@ dependencies {
     compile "com.google.firebase:firebase-appindexing:$firebase_version"
     compile "com.google.firebase:firebase-crash:$firebase_version"
     compile "com.google.firebase:firebase-analytics:$firebase_version"
+    compile "com.google.android.gms:play-services-appinvite:$firebase_version"
 
     compile "android.arch.persistence.room:runtime:$arch_version"
     compile "android.arch.lifecycle:runtime:$arch_version"

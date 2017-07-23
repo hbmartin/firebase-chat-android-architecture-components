@@ -30,7 +30,7 @@ public class ShoudBeDoneOnServer {
                 }
 
                 dataSnapshot.getRef().child(DATA).child(conversation.getMeta().getId())
-                        .setValue(new ChatMessage("new bonfire", conversation.getMeta().getId(), FBX.auth.getCurrentUser()));
+                        .setValue(new ChatMessage("Brand spankin new conversation", conversation.getMeta().getId(), FBX.auth.getCurrentUser()));
             }
 
             @Override

@@ -9,3 +9,4 @@ build/
 app/build
 build
 google-services.json
+/app/release
