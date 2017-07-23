@@ -1,5 +1,6 @@
 package me.haroldmartin.chat.ui.inbox;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,11 @@ import me.haroldmartin.chat.di.Injectable;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
 import me.haroldmartin.chat.ui.common.GlideImageManager;
 import me.haroldmartin.chat.util.AutoClearedValue;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
 
 import java.util.ArrayList;
@@ -31,7 +37,8 @@ public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragment
         binding.get().conversationList.setAdapter(dialogsAdapter);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
         binding.get().setCallback(() -> viewModel.refresh());
-        binding.get().setNewChatCallback(() -> viewModel.onNewConversationRequested(getActivity()));
+        binding.get().setNewChatCallback(() -> viewModel.addConversation(getActivity(),
+                (id) -> navigationController.navigateToConversation(id)));
     }
 
     @Override
@@ -81,8 +88,6 @@ public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragment
 
     @Override
     public void onDialogClick(InboxItem dialog) {
-        Timber.e("onDialogClick");
-        Timber.e(dialog.getDialogName());
         navigationController.navigateToConversation(dialog.getId());
     }
 }

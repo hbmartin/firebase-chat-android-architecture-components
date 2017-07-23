@@ -71,7 +71,6 @@ public class ConversationFragment extends BoundVmFragment<ConversationViewModel,
         LiveData<ChatMessage> convo = viewModel.getConversation();
         convo.observe(this, data -> {
             if (data != null) {
-                Timber.e(data.getText());
                 adapter.get().upsert(data);
 
             }

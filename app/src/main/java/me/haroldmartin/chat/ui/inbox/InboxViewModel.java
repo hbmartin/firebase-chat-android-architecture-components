@@ -1,6 +1,9 @@
 package me.haroldmartin.chat.ui.inbox;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.database.DatabaseReference;
+
 import me.haroldmartin.chat.R;
 import me.haroldmartin.chat.api.Inbox;
 import me.haroldmartin.chat.repository.InboxRepository;
@@ -69,7 +72,7 @@ public class InboxViewModel extends ViewModel {
     }
 
     // TODO replace with FAB in Fragment
-    public void onNewConversationRequested(Context activity) {
+    public void addConversation(Context activity, InboxRepository.ConversationAddedListener callback) {
         new MaterialDialog.Builder(activity)
                 .title(R.string.new_conversation)
                 .content("")
@@ -78,8 +81,7 @@ public class InboxViewModel extends ViewModel {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         String conversation = input.toString();
-                        Timber.e(conversation);
-                        InboxRepository.addConversation(conversation);
+                        InboxRepository.addConversation(conversation, callback);
                     }
                 }).show();
     }

@@ -11,7 +11,8 @@ import me.haroldmartin.chat.firebase.DatabaseRouter;
 
 import me.haroldmartin.firebaseextensions.FBX;
 import me.haroldmartin.firebaseextensions.db.Resource;
-import me.haroldmartin.chat.firebase.ShoudBeDoneOnServer;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,7 +57,7 @@ public class InboxRepository {
         return inbox;
     }
 
-    public static void addConversation(String id) {
+    public static void addConversation(String id, ConversationAddedListener callback) {
         DatabaseRouter.getConversationRef(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,16 +67,18 @@ public class InboxRepository {
                     conversation.addParticipant(FBX.auth.getCurrentUserId());
 
                     dataSnapshot.getRef().child(META).child(PARTICIPANTS)
-                            .child(FBX.auth.getCurrentUserId()).setValue(true);
+                            .child(FBX.auth.getCurrentUserId())
+                            .setValue(true)
+                            .addOnCompleteListener((result) -> { if (callback != null && result.isSuccessful()) { callback.onSuccess(id); } } );
+
                 } else {
                     conversation = new Conversation(id);
                     conversation.addParticipant(FBX.auth.getCurrentUserId());
-                    dataSnapshot.getRef().setValue(conversation);
+                    dataSnapshot.getRef()
+                            .setValue(conversation)
+                            .addOnCompleteListener((result) -> { if (callback != null && result.isSuccessful()) { callback.onSuccess(id); } } );
                 }
-
-                // Now add this conversation to my inbox after it's been added to /conversations
-                // TODO: put children like in addMessage
-                ShoudBeDoneOnServer.addConversationToInbox(conversation);
+                addConversationToInbox(conversation);
             }
 
             @Override
@@ -84,6 +87,35 @@ public class InboxRepository {
             }
         });
     }
+
+    // this method is responsible for creating a user's inbox if they don't already have one
+    public static void addConversationToInbox(Conversation conversation) {
+        // Firebase Serializer chokes on InboxItem, goes into some recursive black hole and OOMs
+        // InboxItem inboxItem = new InboxItem(conversation.getMeta().getId(), conversation.getMeta().getName());
+        DatabaseRouter.getInboxRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    Inbox inbox = new Inbox(FBX.auth.getCurrentUser());
+                    dataSnapshot.getRef().child(META).setValue(inbox.getMeta());
+                }
+                String text = "Brand spankin new conversation";
+                if (conversation.getData().size() > 0) {
+                    // TODO: replace this horrible hack
+                    String key = conversation.getData().keySet().toArray(new String[0])[0];
+                    text = conversation.getData().get(key).getText();
+                }
+                dataSnapshot.getRef().child(DATA).child(conversation.getMeta().getId())
+                        .setValue(new ChatMessage(text, conversation.getMeta().getId(), FBX.auth.getCurrentUser()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Timber.e(databaseError.getDetails());
+            }
+        });
+    }
+
 
 
     public static void addMessage(ChatMessage chatMessage) {
@@ -94,7 +126,6 @@ public class InboxRepository {
 
         HashMap<String, Object> childUpdates = new HashMap<>();
         String msgPath = FBX.db.getPathFromRef(chatMsgRef);
-        Timber.e(msgPath);
         childUpdates.put(msgPath, chatMessage);
 
         DatabaseReference inboxItemRef = DatabaseRouter.getInboxRef().child(DATA).child(chatMessage.getConversationId());
@@ -104,5 +135,9 @@ public class InboxRepository {
         childUpdates.put(FBX.db.getPathFromRef(inboxItemRef.child("timestamp")), chatMessage.getTimestamp());
 
         FBX.db.getBaseRef().updateChildren(childUpdates);
+    }
+
+    public interface ConversationAddedListener {
+        void onSuccess(String conversationId);
     }
 }
