@@ -1,8 +1,6 @@
 package me.haroldmartin.chat.ui.inbox;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.database.DatabaseReference;
 
 import me.haroldmartin.chat.R;
 import me.haroldmartin.chat.api.Inbox;
@@ -18,13 +16,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.text.InputType;
 
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import timber.log.Timber;
 
 public class InboxViewModel extends ViewModel {
 
@@ -69,21 +64,6 @@ public class InboxViewModel extends ViewModel {
         if (query.getValue() != null) {
             query.setValue(query.getValue());
         }
-    }
-
-    // TODO replace with FAB in Fragment
-    public void addConversation(Context activity, InboxRepository.ConversationAddedListener callback) {
-        new MaterialDialog.Builder(activity)
-                .title(R.string.new_conversation)
-                .content("")
-                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS)
-                .input(R.string.new_chat_input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                        String conversation = input.toString();
-                        InboxRepository.addConversation(conversation, callback);
-                    }
-                }).show();
     }
 
     static class LoadMoreState {

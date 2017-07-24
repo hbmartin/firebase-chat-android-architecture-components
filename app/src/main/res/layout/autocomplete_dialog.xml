@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+    <AutoCompleteTextView
+        android:id="@+id/auto_complete_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:completionThreshold="1"
+        android:hint="Select Country" />
+    <Button
+        android:id="@+id/auto_complete_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:text="@string/go"
+        android:layout_marginTop="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        />
+</LinearLayout>

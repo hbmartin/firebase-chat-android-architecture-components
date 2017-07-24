@@ -1,19 +1,29 @@
 package me.haroldmartin.chat.ui.inbox;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
+import hugo.weaving.DebugLog;
 import me.haroldmartin.chat.R;
 import me.haroldmartin.chat.api.InboxItem;
 import me.haroldmartin.chat.databinding.InboxFragmentBinding;
 import me.haroldmartin.chat.di.Injectable;
+import me.haroldmartin.chat.repository.InboxRepository;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
 import me.haroldmartin.chat.ui.common.GlideImageManager;
 import me.haroldmartin.chat.util.AutoClearedValue;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
@@ -37,8 +47,42 @@ public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragment
         binding.get().conversationList.setAdapter(dialogsAdapter);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
         binding.get().setCallback(() -> viewModel.refresh());
-        binding.get().setNewChatCallback(() -> viewModel.addConversation(getActivity(),
-                (id) -> navigationController.navigateToConversation(id)));
+        binding.get().setNewChatCallback(() -> showAutocompleteDialog() ); // TODO: FAB
+    }
+
+    void showAutocompleteDialog() {
+            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                    .title(R.string.new_conversation)
+                    .customView(R.layout.autocomplete_dialog, false)
+                    .show();
+            setupAutocomplete(dialog);
+    }
+
+    void setupAutocomplete(MaterialDialog dialog) {
+        View view = dialog.getCustomView();
+        String autocompleteValues[] = { "random", "test", "whatever" };
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.auto_complete_text);
+        ArrayAdapter<String> autoCompleteAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, autocompleteValues);
+        autoCompleteTextView.setAdapter(autoCompleteAdapter);
+
+        // TODO: query Firebase as user types
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @DebugLog
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                InboxRepository.addConversation(autocompleteValues[position], new InboxConversationAddedListener());
+                dialog.dismiss();
+            }
+        });
+
+        Button submit = (Button) view.findViewById(R.id.auto_complete_submit);
+        submit.setOnClickListener((l) -> {
+            String id = autoCompleteTextView.getText().toString();
+            dialog.dismiss();
+            InboxRepository.addConversation(id, new InboxConversationAddedListener());
+        });
     }
 
     @Override
@@ -89,5 +133,12 @@ public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragment
     @Override
     public void onDialogClick(InboxItem dialog) {
         navigationController.navigateToConversation(dialog.getId());
+    }
+
+    class InboxConversationAddedListener implements InboxRepository.ConversationAddedListener {
+        @Override
+        public void onSuccess(String conversationId) {
+            navigationController.navigateToConversation(conversationId);
+        }
     }
 }

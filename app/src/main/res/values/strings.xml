@@ -18,8 +18,9 @@
     <string name="input_prefill">random</string>
     <string name="new_conversation">New Conversation</string>
     <string name="new_message">New Message</string>
-    <string name="hint_enter_a_message">I\'d like to thank the academy...</string>
+    <string name="hint_enter_a_message">Send a chat</string>
 
     <string name="facebook_app_id">471566239868694</string>
     <string name="fb_login_protocol_scheme">fb471566239868694</string>
+    <string name="go">Go</string>
 </resources>
