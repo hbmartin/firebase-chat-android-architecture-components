@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.haroldmartin.chat.binding.FragmentDataBindingComponent;
-import me.haroldmartin.chat.util.AutoClearedValue;
+import me.haroldmartin.firebaseextensions.android.lifecycle.AutoClearedValue;
 
 import javax.inject.Inject;
 

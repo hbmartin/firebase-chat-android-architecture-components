@@ -4,7 +4,7 @@ import me.haroldmartin.chat.api.ChatMessage;
 import me.haroldmartin.chat.api.ConversationMetaData;
 import me.haroldmartin.chat.repository.InboxRepository;
 import me.haroldmartin.firebaseextensions.db.Resource;
-import me.haroldmartin.chat.util.AbsentLiveData;
+import me.haroldmartin.firebaseextensions.db.AbsentLiveData;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

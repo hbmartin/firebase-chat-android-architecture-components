@@ -1,17 +1,19 @@
 package me.haroldmartin.chat.ui.inbox;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
+
+import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
 import me.haroldmartin.chat.R;
@@ -21,18 +23,7 @@ import me.haroldmartin.chat.di.Injectable;
 import me.haroldmartin.chat.repository.InboxRepository;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
 import me.haroldmartin.chat.ui.common.GlideImageManager;
-import me.haroldmartin.chat.util.AutoClearedValue;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.stfalcon.chatkit.dialogs.DialogsListAdapter;
-
-import java.util.ArrayList;
-
-import timber.log.Timber;
+import me.haroldmartin.firebaseextensions.android.lifecycle.AutoClearedValue;
 
 public class InboxFragment extends BoundVmFragment<InboxViewModel, InboxFragmentBinding>
         implements Injectable, DialogsListAdapter.OnDialogClickListener<InboxItem> {

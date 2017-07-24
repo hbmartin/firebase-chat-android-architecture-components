@@ -12,11 +12,11 @@ import me.haroldmartin.chat.databinding.ConversationFragmentBinding;
 import me.haroldmartin.chat.di.Injectable;
 
 import me.haroldmartin.firebaseextensions.FBX;
+import me.haroldmartin.firebaseextensions.android.lifecycle.AutoClearedValue;
 import me.haroldmartin.firebaseextensions.db.Resource;
 import me.haroldmartin.chat.repository.InboxRepository;
 import me.haroldmartin.chat.ui.common.BoundVmFragment;
 import me.haroldmartin.chat.ui.common.GlideImageManager;
-import me.haroldmartin.chat.util.AutoClearedValue;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
