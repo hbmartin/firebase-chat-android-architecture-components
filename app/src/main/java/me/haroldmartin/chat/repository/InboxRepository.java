@@ -9,10 +9,9 @@ import me.haroldmartin.chat.api.ConversationMetaData;
 import me.haroldmartin.chat.api.Inbox;
 import me.haroldmartin.chat.firebase.DatabaseRouter;
 
-import me.haroldmartin.firebaseextensions.FBX;
+import me.haroldmartin.firebaseextensions.Fire;
 import me.haroldmartin.firebaseextensions.db.Resource;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,16 +63,16 @@ public class InboxRepository {
                 Conversation conversation = null;
                 if (dataSnapshot.exists()) {
                     conversation = dataSnapshot.getValue(Conversation.class);
-                    conversation.addParticipant(FBX.auth.getCurrentUserId());
+                    conversation.addParticipant(Fire.auth.getCurrentUserId());
 
                     dataSnapshot.getRef().child(META).child(PARTICIPANTS)
-                            .child(FBX.auth.getCurrentUserId())
+                            .child(Fire.auth.getCurrentUserId())
                             .setValue(true)
                             .addOnCompleteListener((result) -> { if (callback != null && result.isSuccessful()) { callback.onSuccess(id); } } );
 
                 } else {
                     conversation = new Conversation(id);
-                    conversation.addParticipant(FBX.auth.getCurrentUserId());
+                    conversation.addParticipant(Fire.auth.getCurrentUserId());
                     dataSnapshot.getRef()
                             .setValue(conversation)
                             .addOnCompleteListener((result) -> { if (callback != null && result.isSuccessful()) { callback.onSuccess(id); } } );
@@ -96,7 +95,7 @@ public class InboxRepository {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
-                    Inbox inbox = new Inbox(FBX.auth.getCurrentUser());
+                    Inbox inbox = new Inbox(Fire.auth.getCurrentUser());
                     dataSnapshot.getRef().child(META).setValue(inbox.getMeta());
                 }
                 String text = "Brand spankin new conversation";
@@ -106,7 +105,7 @@ public class InboxRepository {
                     text = conversation.getData().get(key).getText();
                 }
                 dataSnapshot.getRef().child(DATA).child(conversation.getMeta().getId())
-                        .setValue(new ChatMessage(text, conversation.getMeta().getId(), FBX.auth.getCurrentUser()));
+                        .setValue(new ChatMessage(text, conversation.getMeta().getId(), Fire.auth.getCurrentUser()));
             }
 
             @Override
@@ -125,16 +124,16 @@ public class InboxRepository {
 //        ShoudBeDoneOnServer.updateChatMessageInInbox(chatMessage);
 
         HashMap<String, Object> childUpdates = new HashMap<>();
-        String msgPath = FBX.db.getPathFromRef(chatMsgRef);
+        String msgPath = Fire.db.getPathFromRef(chatMsgRef);
         childUpdates.put(msgPath, chatMessage);
 
         DatabaseReference inboxItemRef = DatabaseRouter.getInboxRef().child(DATA).child(chatMessage.getConversationId());
 //        inboxItemRef.setValue(chatMessage);
-        childUpdates.put(FBX.db.getPathFromRef(inboxItemRef.child("text")), chatMessage.getText());
-        childUpdates.put(FBX.db.getPathFromRef(inboxItemRef.child("name")), chatMessage.getUserName());
-        childUpdates.put(FBX.db.getPathFromRef(inboxItemRef.child("timestamp")), chatMessage.getTimestamp());
+        childUpdates.put(Fire.db.getPathFromRef(inboxItemRef.child("text")), chatMessage.getText());
+        childUpdates.put(Fire.db.getPathFromRef(inboxItemRef.child("name")), chatMessage.getUserName());
+        childUpdates.put(Fire.db.getPathFromRef(inboxItemRef.child("timestamp")), chatMessage.getTimestamp());
 
-        FBX.db.getBaseRef().updateChildren(childUpdates);
+        Fire.db.getBaseRef().updateChildren(childUpdates);
     }
 
     public interface ConversationAddedListener {

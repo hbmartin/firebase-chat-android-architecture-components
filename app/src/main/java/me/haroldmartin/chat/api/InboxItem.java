@@ -9,7 +9,7 @@ import com.stfalcon.chatkit.commons.models.IMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.haroldmartin.firebaseextensions.FBX;
+import me.haroldmartin.firebaseextensions.Fire;
 
 public class InboxItem extends ChatMessage implements IDialog {
     @Exclude
@@ -23,11 +23,11 @@ public class InboxItem extends ChatMessage implements IDialog {
 
 
     public InboxItem(String conversationId, String dialogName) {
-        super("new bonfire", conversationId, FBX.auth.getCurrentUser());
+        super("new bonfire", conversationId, Fire.auth.getCurrentUser());
         this.lastRead = getTimestamp();
         this.dialogName = dialogName;
         this.users = new ArrayList<User>();
-        this.users.add(new User(FBX.auth.getCurrentUser()));
+        this.users.add(new User(Fire.auth.getCurrentUser()));
     }
 
     public Long getLastRead() {

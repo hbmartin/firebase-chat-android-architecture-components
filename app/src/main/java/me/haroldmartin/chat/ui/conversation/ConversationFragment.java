@@ -11,7 +11,7 @@ import me.haroldmartin.chat.api.ConversationMetaData;
 import me.haroldmartin.chat.databinding.ConversationFragmentBinding;
 import me.haroldmartin.chat.di.Injectable;
 
-import me.haroldmartin.firebaseextensions.FBX;
+import me.haroldmartin.firebaseextensions.Fire;
 import me.haroldmartin.firebaseextensions.android.lifecycle.AutoClearedValue;
 import me.haroldmartin.firebaseextensions.db.Resource;
 import me.haroldmartin.chat.repository.InboxRepository;
@@ -19,8 +19,6 @@ import me.haroldmartin.chat.ui.common.BoundVmFragment;
 import me.haroldmartin.chat.ui.common.GlideImageManager;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-
-import timber.log.Timber;
 
 public class ConversationFragment extends BoundVmFragment<ConversationViewModel, ConversationFragmentBinding>
         implements Injectable, MessageInput.InputListener {
@@ -39,7 +37,7 @@ public class ConversationFragment extends BoundVmFragment<ConversationViewModel,
         } else {
             viewModel.setId(null);
         }
-        userId = FBX.auth.getCurrentUserId();
+        userId = Fire.auth.getCurrentUserId();
     }
 
     protected void setupUi() {
@@ -94,7 +92,7 @@ public class ConversationFragment extends BoundVmFragment<ConversationViewModel,
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        ChatMessage chat = new ChatMessage(input.toString(), conversationId, FBX.auth.getCurrentUser());
+        ChatMessage chat = new ChatMessage(input.toString(), conversationId, Fire.auth.getCurrentUser());
         adapter.get().addToStart(chat, true); // TODO: should be added in grayed out state until Firebase child loaded
         InboxRepository.addMessage(chat);
         return true;
